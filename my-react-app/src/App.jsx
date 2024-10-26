@@ -1,3 +1,4 @@
+import { useState } from "react";
 import "./App.css";
 import Die from "./component/Die";
 
@@ -13,22 +14,19 @@ export default function App() {
 
     return diceRolls;
   }
-  console.log(allNewDice());
+  function refroll() {
+    setdie(allNewDice());
+  }
+  const [die, setdie] = useState(allNewDice());
+
+  const diceelemnt = die.map((die) => <Die value={die} />);
 
   return (
     <main>
-      <div className="dice-container">
-        <Die value="1" />
-        <Die value="2" />
-        <Die value="3" />
-        <Die value="4" />
-        <Die value="5" />
-        <Die value="6" />
-        <Die value="7" />
-        <Die value="8" />
-        <Die value="9" />
-        <Die value="1" />
-      </div>
+      <div className="dice-container">{diceelemnt}</div>
+      <button className="roll-dice" onClick={refroll}>
+        Roll
+      </button>
     </main>
   );
 }
