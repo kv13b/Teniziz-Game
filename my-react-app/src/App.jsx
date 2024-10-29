@@ -11,7 +11,7 @@ export default function App() {
       // Generate a random number between 1 and 6 (inclusive)
       newdice.push({
         value: Math.ceil(Math.random() * 6),
-        isHeld: true,
+        isHeld: false,
         id: nanoid,
       });
     }
@@ -21,10 +21,24 @@ export default function App() {
   function refroll() {
     setdie(allNewDice());
   }
+
   const [die, setdie] = useState(allNewDice());
 
+  function holdDice(id) {
+    setdie((oldie) =>
+      oldie.map((die) => {
+        return die.id === id ? { ...die, isHeld: !die.isHeld } : die;
+      })
+    );
+    console.log(id);
+  }
   const diceelemnt = die.map((die) => (
-    <Die value={die.value} key={die.id} isHeld={die.isHeld} />
+    <Die
+      value={die.value}
+      key={die.id}
+      isHeld={die.isHeld}
+      holdDice={() => holdDice(die.id)}
+    />
   ));
 
   return (
