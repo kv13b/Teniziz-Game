@@ -4,22 +4,29 @@ import Die from "./component/Die";
 import { nanoid } from "nanoid";
 
 export default function App() {
+  function generateNewDie() {
+    return {
+      value: Math.ceil(Math.random() * 6),
+      isHeld: false,
+      id: nanoid(),
+    };
+  }
   function allNewDice() {
     const newdice = [];
 
     for (let i = 0; i < 10; i++) {
       // Generate a random number between 1 and 6 (inclusive)
-      newdice.push({
-        value: Math.ceil(Math.random() * 6),
-        isHeld: false,
-        id: nanoid,
-      });
+      newdice.push(generateNewDie());
     }
 
     return newdice;
   }
   function refroll() {
-    setdie(allNewDice());
+    setdie((olddie) =>
+      olddie.map((die) => {
+        return die.isHeld ? die : generateNewDie();
+      })
+    );
   }
 
   const [die, setdie] = useState(allNewDice());
@@ -43,6 +50,11 @@ export default function App() {
 
   return (
     <main>
+      <h1 className="title">Tenzies</h1>
+      <p className="instructions">
+        Roll until all dice are the same. Click each die to freeze it at its
+        current value between rolls.
+      </p>
       <div className="dice-container">{diceelemnt}</div>
       <button className="roll-dice" onClick={refroll}>
         Roll
