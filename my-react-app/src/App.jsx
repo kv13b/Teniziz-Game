@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import Die from "./component/Die";
 import { nanoid } from "nanoid";
@@ -47,6 +47,18 @@ export default function App() {
       holdDice={() => holdDice(die.id)}
     />
   ));
+
+  const [tenz, settenz] = useState(false);
+
+  useEffect(() => {
+    const allHeld = die.every((die) => die.isHeld);
+    const firstval = die[0].value;
+    const allcompare = die.every((die) => die.value === firstval);
+    if (allHeld && allcompare) {
+      settenz(true);
+      console.log("you won");
+    }
+  });
 
   return (
     <main>
